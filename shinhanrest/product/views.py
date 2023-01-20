@@ -1,4 +1,6 @@
 from rest_framework import generics, mixins
+from rest_framework import status
+from rest_framework.response import Response
 from .models import Product, Comment, Like
 from .serializers import (
     ProductSerializer, 
@@ -98,4 +100,10 @@ class LikeCreateView(
         return Like.object.all()
 
     def post(self, request, *args, **kwargs):
+        product_id = request.data.get('product')
+
+        if Like.objects.filter(member=request.user, product=product_id).exists():
+            Like.objects.filter(member=request.user, product=product_id).delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
         return self.create(request, args, kwargs)
