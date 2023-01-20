@@ -1,9 +1,10 @@
 from rest_framework import generics, mixins
-from .models import Product, Comment
+from .models import Product, Comment, Like
 from .serializers import (
     ProductSerializer, 
     CommentSerializer, 
-    CommentCreateSerializer
+    CommentCreateSerializer,
+    LikeCreateSerializer
 )
 from .paginations import ProductLargePagination
 
@@ -74,6 +75,7 @@ class CommentListView(
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
+# 댓글달기 기능
 class CommentCreateView(
     mixins.CreateModelMixin,
     generics.GenericAPIView
@@ -83,5 +85,17 @@ class CommentCreateView(
     def get_queryset(self):
         return Comment.objects.all()
     
+    def post(self, request, *args, **kwargs):
+        return self.create(request, args, kwargs)
+
+# 좋아요 기능
+class LikeCreateView(
+    mixins.CreateModelMixin,
+    generics.GenericAPIView
+):
+    serializer_class = LikeCreateSerializer
+    def get_queryset(self):
+        return Like.object.all()
+
     def post(self, request, *args, **kwargs):
         return self.create(request, args, kwargs)
