@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <h1>Hello Python!</h1>
+        <ul>
+            {% for member in members %}
+            <li>
+                {{ member.name }} {{member.age }}
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
